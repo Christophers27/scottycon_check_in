@@ -1,12 +1,15 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:scottycon_check_in/gsheets_api.dart';
 import 'package:scottycon_check_in/user.dart';
 
 class UserFormWidget extends StatefulWidget {
   final User? user;
-  final ValueChanged<User> onSavedUser;
+  final ValueChanged<int?> onSavedUser;
 
-  const UserFormWidget({super.key, required this.onSavedUser, this.user});
+  const UserFormWidget(
+      {super.key, required this.onSavedUser, this.user});
 
   @override
   State<UserFormWidget> createState() => _UserFormWidgetState();
@@ -19,6 +22,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
   late TextEditingController controllerDetail;
   late bool isTrue;
   User? user;
+  late int? id;
 
   @override
   void initState() {
@@ -66,15 +70,11 @@ class _UserFormWidgetState extends State<UserFormWidget> {
           ElevatedButton(
               onPressed: () {
                 final form = formKey.currentState!;
+                id = int.tryParse(controllerId.text);
                 final isValid = form.validate();
 
                 if (isValid) {
-                  final user = User(
-                      id: int.tryParse(controllerId.text),
-                      name: controllerName.text,
-                      detail: controllerDetail.text,
-                      isTrue: isTrue);
-                  widget.onSavedUser(user);
+                  widget.onSavedUser(id);
                 }
               },
               child: Text("Search"))
@@ -89,31 +89,12 @@ class _UserFormWidgetState extends State<UserFormWidget> {
           labelText: "Id",
           border: OutlineInputBorder(),
         ),
+        validator: (value) => value != null && value.isEmpty ? 'Enter ID' : null,
       );
 
-  Widget buildName() => TextFormField(
-        controller: controllerName,
-        decoration: const InputDecoration(
-          labelText: 'Name',
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) =>
-            value != null && value.isEmpty ? 'Enter Name' : null,
-      );
+  Widget buildName() => Text(controllerName.text);
 
-  Widget buildDetails() => TextFormField(
-        controller: controllerDetail,
-        decoration: const InputDecoration(
-          labelText: 'Details',
-          border: OutlineInputBorder(),
-        ),
-        validator: (value) =>
-            value != null && value.isEmpty ? 'Enter Details' : null,
-      );
+  Widget buildDetails() => Text(controllerDetail.text);
 
-  Widget buildIsTrue() => SwitchListTile(
-        value: isTrue,
-        title: const Text("Is True?"),
-        onChanged: (value) => setState(() => isTrue = value),
-      );
+  Widget buildIsTrue() => Text(isTrue.toString());
 }

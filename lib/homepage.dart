@@ -16,16 +16,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   User? user;
   String name = "Name";
+  int? id;
 
   @override
   void initState() {
     super.initState();
-
-    getUsers();
   }
 
   void getUsers() async {
-    final user = await GoogleSheetsApi.getById(2);
+    final user = await GoogleSheetsApi.getById(this.id!);
     print(user!.toJson());
 
     setState(() {
@@ -62,16 +61,13 @@ class _HomePageState extends State<HomePage> {
               SingleChildScrollView(
                 child: UserFormWidget(
                   user: user,
-                  onSavedUser: (user) async {
-                    if (user.id != null) {
-                      await GoogleSheetsApi.insert([user.toJson()]);
+                  onSavedUser: (id) async {
+                    if (id != null) {
+                      this.id = id;
+                      getUsers();
                     } else {
-                      final id = await GoogleSheetsApi.getRowCount() + 1;
-                      final newUser = user.copy(id: id);
-
-                      await GoogleSheetsApi.insert([newUser.toJson()]);
+                      print("error");
                     }
-                    
                   },
                 ),
               )
