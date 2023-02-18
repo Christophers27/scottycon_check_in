@@ -14,6 +14,7 @@ class UserFormWidget extends StatefulWidget {
 
 class _UserFormWidgetState extends State<UserFormWidget> {
   final formKey = GlobalKey<FormState>();
+  late TextEditingController controllerId;
   late TextEditingController controllerName;
   late TextEditingController controllerDetail;
   late bool isTrue;
@@ -27,14 +28,16 @@ class _UserFormWidgetState extends State<UserFormWidget> {
   }
 
   void initUser() {
+    final id = widget.user == null ? '' : widget.user!.id.toString();
     final name = widget.user == null ? '' : widget.user!.name;
     final detail = widget.user == null ? '' : widget.user!.detail;
-    final isTrue = widget.user == null ? '' : widget.user!.isTrue;
+    final isTrue = widget.user == null ? true : widget.user!.isTrue;
 
     setState(() {
+      controllerId = TextEditingController(text: id);
       controllerName = TextEditingController(text: name);
       controllerDetail = TextEditingController(text: detail);
-      this.isTrue = true;
+      this.isTrue = isTrue;
     });
   }
 
@@ -52,6 +55,8 @@ class _UserFormWidgetState extends State<UserFormWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          buildId(),
+          SizedBox(height: 16),
           buildName(),
           SizedBox(height: 16),
           buildDetails(),
@@ -65,17 +70,26 @@ class _UserFormWidgetState extends State<UserFormWidget> {
 
                 if (isValid) {
                   final user = User(
+                      id: int.tryParse(controllerId.text),
                       name: controllerName.text,
                       detail: controllerDetail.text,
                       isTrue: isTrue);
                   widget.onSavedUser(user);
                 }
               },
-              child: Text("Save"))
+              child: Text("Search"))
         ],
       ),
     );
   }
+
+  Widget buildId() => TextFormField(
+        controller: controllerId,
+        decoration: const InputDecoration(
+          labelText: "Id",
+          border: OutlineInputBorder(),
+        ),
+      );
 
   Widget buildName() => TextFormField(
         controller: controllerName,

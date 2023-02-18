@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       this.user = user;
-      this.name = user.name; 
+      this.name = user.name;
     });
   }
 
@@ -63,10 +63,15 @@ class _HomePageState extends State<HomePage> {
                 child: UserFormWidget(
                   user: user,
                   onSavedUser: (user) async {
-                    final id = await GoogleSheetsApi.getRowCount() + 1;
-                    final newUser = user.copy(id: id);
+                    if (user.id != null) {
+                      await GoogleSheetsApi.insert([user.toJson()]);
+                    } else {
+                      final id = await GoogleSheetsApi.getRowCount() + 1;
+                      final newUser = user.copy(id: id);
 
-                    await GoogleSheetsApi.insert([newUser.toJson()]);
+                      await GoogleSheetsApi.insert([newUser.toJson()]);
+                    }
+                    
                   },
                 ),
               )
