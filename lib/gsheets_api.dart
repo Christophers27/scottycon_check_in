@@ -21,7 +21,7 @@ class GoogleSheetsApi {
   ''';
 
   // Set up GSheets object
-  static const _spreadsheetId = '1XuWRWuJHHjWy4iVQv0WPOF9yg-Njs9FJGyPlmx0qAy8';
+  static const _spreadsheetId = '1bscLAO-18UZNFkv89Ldvj5dH5KDptD7-R6gXhOM6g1I';
   static final _gsheets = GSheets(_credentials);
   static Worksheet? _worksheet;
 
@@ -45,13 +45,6 @@ class GoogleSheetsApi {
     } catch (e) {
       return spreadsheet.worksheetByTitle(title)!;
     }
-  }
-
-  static Future<int> getRowCount() async {
-    if (_worksheet == null) return 0;
-
-    final lastRow = await _worksheet!.values.lastRow();
-    return lastRow == null ? 0 : int.tryParse(lastRow.first) ?? 0;
   }
 
   static Future<User?> getById(int id) async {

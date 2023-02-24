@@ -8,8 +8,7 @@ class UserFormWidget extends StatefulWidget {
   final User? user;
   final ValueChanged<int?> onSavedUser;
 
-  const UserFormWidget(
-      {super.key, required this.onSavedUser, this.user});
+  const UserFormWidget({super.key, required this.onSavedUser, this.user});
 
   @override
   State<UserFormWidget> createState() => _UserFormWidgetState();
@@ -33,9 +32,9 @@ class _UserFormWidgetState extends State<UserFormWidget> {
 
   void initUser() {
     final id = widget.user == null ? '' : widget.user!.id.toString();
-    final name = widget.user == null ? '' : widget.user!.name;
-    final detail = widget.user == null ? '' : widget.user!.detail;
-    final isTrue = widget.user == null ? true : widget.user!.isTrue;
+    final name = widget.user == null ? '' : widget.user!.firstName;
+    final detail = widget.user == null ? '' : widget.user!.isStudent;
+    final isTrue = widget.user == null ? true : widget.user!.giftCard;
 
     setState(() {
       controllerId = TextEditingController(text: id);
@@ -89,7 +88,8 @@ class _UserFormWidgetState extends State<UserFormWidget> {
           labelText: "Id",
           border: OutlineInputBorder(),
         ),
-        validator: (value) => value != null && value.isEmpty ? 'Enter ID' : null,
+        validator: (value) =>
+            value != null && value.isEmpty ? 'Enter ID' : null,
       );
 
   Widget buildName() => Text(controllerName.text);
