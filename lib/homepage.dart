@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       this.user = user;
-      this.name = user.firstName;
+      this.name = "${user.firstName} ${user.lastName}";
     });
   }
 

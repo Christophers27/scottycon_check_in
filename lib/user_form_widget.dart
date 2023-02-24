@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:scottycon_check_in/gsheets_api.dart';
 import 'package:scottycon_check_in/user.dart';
@@ -17,9 +15,10 @@ class UserFormWidget extends StatefulWidget {
 class _UserFormWidgetState extends State<UserFormWidget> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController controllerId;
-  late TextEditingController controllerName;
-  late TextEditingController controllerDetail;
-  late bool isTrue;
+  late TextEditingController controllerFirstName;
+  late TextEditingController controllerLastName;
+  late bool isStudent;
+  late bool giftCard;
   User? user;
   late int? id;
 
@@ -32,15 +31,17 @@ class _UserFormWidgetState extends State<UserFormWidget> {
 
   void initUser() {
     final id = widget.user == null ? '' : widget.user!.id.toString();
-    final name = widget.user == null ? '' : widget.user!.firstName;
-    final detail = widget.user == null ? '' : widget.user!.isStudent;
-    final isTrue = widget.user == null ? true : widget.user!.giftCard;
+    final firstName = widget.user == null ? '' : widget.user!.firstName;
+    final lastName = widget.user == null ? '' : widget.user!.lastName;
+    final isStudent = widget.user == null ? false : widget.user!.isStudent;
+    final giftCard = widget.user == null ? false : widget.user!.giftCard;
 
     setState(() {
       controllerId = TextEditingController(text: id);
-      controllerName = TextEditingController(text: name);
-      controllerDetail = TextEditingController(text: detail);
-      this.isTrue = isTrue;
+      controllerFirstName = TextEditingController(text: firstName);
+      controllerLastName = TextEditingController(text: lastName);
+      this.giftCard = giftCard;
+      this.isStudent = isStudent;
     });
   }
 
@@ -60,11 +61,13 @@ class _UserFormWidgetState extends State<UserFormWidget> {
         children: [
           buildId(),
           SizedBox(height: 16),
-          buildName(),
+          buildFirstName(),
           SizedBox(height: 16),
-          buildDetails(),
+          buildLastName(),
           SizedBox(height: 16),
-          buildIsTrue(),
+          buildGiftCard(),
+          SizedBox(height: 16),
+          buildIsStudent(),
           SizedBox(height: 16),
           ElevatedButton(
               onPressed: () {
@@ -92,9 +95,11 @@ class _UserFormWidgetState extends State<UserFormWidget> {
             value != null && value.isEmpty ? 'Enter ID' : null,
       );
 
-  Widget buildName() => Text(controllerName.text);
+  Widget buildFirstName() => Text("First Name: ${controllerFirstName.text}");
 
-  Widget buildDetails() => Text(controllerDetail.text);
+  Widget buildLastName() => Text("Last Name: ${controllerLastName.text}");
 
-  Widget buildIsTrue() => Text(isTrue.toString());
+  Widget buildIsStudent() => Text("Is Student? : ${isStudent.toString()}");
+
+  Widget buildGiftCard() => Text("Gift Card? : ${giftCard.toString()}");
 }
