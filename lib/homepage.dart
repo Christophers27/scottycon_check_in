@@ -77,10 +77,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  Future insertUsers() async {
-    const userInfo = User(id: 1, name: "Chris", detail: "Stuff", isTrue: true);
-
-    await GoogleSheetsApi.insert([userInfo.toJson()]);
-  }
 }
