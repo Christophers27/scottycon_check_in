@@ -5,8 +5,13 @@ import 'package:scottycon_check_in/user.dart';
 class UserFormWidget extends StatefulWidget {
   final User? user;
   final ValueChanged<int?> onSavedUser;
+  final ValueChanged<bool> onCheckIn;
 
-  const UserFormWidget({super.key, required this.onSavedUser, this.user});
+  const UserFormWidget(
+      {super.key,
+      required this.onSavedUser,
+      this.user,
+      required this.onCheckIn});
 
   @override
   State<UserFormWidget> createState() => _UserFormWidgetState();
@@ -62,24 +67,40 @@ class _UserFormWidgetState extends State<UserFormWidget> {
           buildId(),
           SizedBox(height: 16),
           buildFirstName(),
-          SizedBox(height: 16),
+          SizedBox(height: 8),
           buildLastName(),
           SizedBox(height: 16),
           buildGiftCard(),
           SizedBox(height: 16),
           buildIsStudent(),
           SizedBox(height: 16),
-          ElevatedButton(
-              onPressed: () {
-                final form = formKey.currentState!;
-                id = int.tryParse(controllerId.text);
-                final isValid = form.validate();
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    final form = formKey.currentState!;
+                    id = int.tryParse(controllerId.text);
+                    final isValid = form.validate();
 
-                if (isValid) {
-                  widget.onSavedUser(id);
-                }
-              },
-              child: Text("Search"))
+                    if (isValid) {
+                      widget.onSavedUser(id);
+                    }
+                  },
+                  child: Text("Search")),
+              SizedBox(width: 16),
+              ElevatedButton(
+                  onPressed: () {
+                    final form = formKey.currentState!;
+                    final isValid = form.validate();
+
+                    if (isValid) {
+                      widget.onCheckIn(true);
+                    }
+                  },
+                  child: Text("Check in this user"))
+            ],
+          )
         ],
       ),
     );
@@ -95,9 +116,19 @@ class _UserFormWidgetState extends State<UserFormWidget> {
             value != null && value.isEmpty ? 'Enter ID' : null,
       );
 
-  Widget buildFirstName() => Text("First Name: ${controllerFirstName.text}");
+  Widget buildFirstName() => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("First Name: ${controllerFirstName.text}"),
+        ),
+      );
 
-  Widget buildLastName() => Text("Last Name: ${controllerLastName.text}");
+  Widget buildLastName() => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("Last Name: ${controllerLastName.text}"),
+        ),
+      );
 
   Widget buildIsStudent() => Text("Is Student? : ${isStudent.toString()}");
 

@@ -15,6 +15,7 @@ class UserFields {
   static const String totalTicketSaleCost = 'ProductTotalPrice';
   static const String coupon = 'Coupon';
   static const String giftCard = "Dunkin' Gift Card";
+  static const String checkedIn = 'Checked-in';
 
   static List<String> getFields() => [
         id,
@@ -30,7 +31,8 @@ class UserFields {
         ticketSaleCost,
         totalTicketSaleCost,
         coupon,
-        giftCard
+        giftCard,
+        checkedIn
       ];
 }
 
@@ -49,6 +51,7 @@ class User {
   final int totalTicketSaleCost;
   final String coupon;
   final bool giftCard;
+  final bool checkedIn;
 
   const User({
     required this.id,
@@ -65,6 +68,7 @@ class User {
     required this.totalTicketSaleCost,
     required this.coupon,
     required this.giftCard,
+    required this.checkedIn,
   });
 
   User copy(
@@ -81,7 +85,8 @@ class User {
           int? ticketSaleCost,
           int? totalTicketSaleCost,
           String? coupon,
-          bool? isTrue}) =>
+          bool? isTrue,
+          bool? checkedIn}) =>
       User(
           id: id ?? this.id,
           date: date ?? this.date,
@@ -96,7 +101,8 @@ class User {
           ticketSaleCost: ticketSaleCost ?? this.ticketSaleCost,
           totalTicketSaleCost: totalTicketSaleCost ?? this.totalTicketSaleCost,
           coupon: coupon ?? this.coupon,
-          giftCard: isTrue ?? this.giftCard);
+          giftCard: isTrue ?? this.giftCard,
+          checkedIn: checkedIn ?? this.checkedIn);
 
   static User fromJson(Map<String, dynamic> json) => User(
         id: jsonDecode(json[UserFields.id]),
@@ -106,13 +112,15 @@ class User {
         email: json[UserFields.email],
         phone: json[UserFields.phone],
         ticketName: json[UserFields.ticketName],
-        isStudent: (json[UserFields.isStudent] == "Type : CMU Student Pass (Limit 1 per order)"),
+        isStudent: (json[UserFields.isStudent] ==
+            "Type : CMU Student Pass (Limit 1 per order)"),
         ticketNum: jsonDecode(json[UserFields.ticketNum]),
         ticketCost: jsonDecode(json[UserFields.ticketCost]),
         ticketSaleCost: jsonDecode(json[UserFields.ticketSaleCost]),
         totalTicketSaleCost: jsonDecode(json[UserFields.totalTicketSaleCost]),
         coupon: json[UserFields.coupon],
         giftCard: (json[UserFields.giftCard] == "Y"),
+        checkedIn: (json[UserFields.checkedIn] == "True")
       );
 
   Map<String, dynamic> toJson() => {
@@ -129,6 +137,7 @@ class User {
         UserFields.ticketSaleCost: ticketSaleCost,
         UserFields.totalTicketSaleCost: totalTicketSaleCost,
         UserFields.coupon: coupon,
-        UserFields.giftCard: giftCard
+        UserFields.giftCard: giftCard,
+        UserFields.checkedIn: checkedIn
       };
 }

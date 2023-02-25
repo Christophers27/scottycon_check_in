@@ -60,16 +60,18 @@ class _HomePageState extends State<HomePage> {
                   )),
               SingleChildScrollView(
                 child: UserFormWidget(
-                  user: user,
-                  onSavedUser: (id) async {
-                    if (id != null) {
-                      this.id = id;
-                      getUsers();
-                    } else {
-                      print("error");
-                    }
-                  },
-                ),
+                    user: user,
+                    onSavedUser: (id) async {
+                      if (id != null) {
+                        this.id = id;
+                        getUsers();
+                      } else {
+                        print("error");
+                      }
+                    },
+                    onCheckIn: (checkin) async {
+                      GoogleSheetsApi.setCheckIn(this.user!, checkin);
+                    }),
               )
             ],
           ),
