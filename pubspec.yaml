@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   gsheets: ^0.4.2
   provider: ^6.0.5
+  barcode_scanner: ^3.2.3
 
 dev_dependencies:
   flutter_test:
