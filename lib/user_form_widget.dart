@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scottycon_check_in/gsheets_api.dart';
 import 'package:scottycon_check_in/user.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 class UserFormWidget extends StatefulWidget {
   final User? user;
@@ -77,6 +79,9 @@ class _UserFormWidgetState extends State<UserFormWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              ElevatedButton(onPressed: scan, 
+              child: Text("Scan QR Code")),
+              SizedBox(width: 16),
               ElevatedButton(
                   onPressed: () {
                     final form = formKey.currentState!;
@@ -104,6 +109,28 @@ class _UserFormWidgetState extends State<UserFormWidget> {
         ],
       ),
     );
+  }
+
+  Future scan() async {
+    try {
+      var res = await BarcodeScanner.scan();
+      setState(() {
+        controllerId.text = res.rawContent;
+      });
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        setState(() {
+          controllerId.text = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => controllerId.text = 'Unknown error: $e');
+      }
+    } on FormatException {
+      setState(() => controllerId.text =
+          'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => controllerId.text = 'Unknown error: $e');
+    }
   }
 
   Widget buildId() => TextFormField(
