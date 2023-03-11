@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:gsheets/gsheets.dart';
 import 'package:scottycon_check_in/user.dart';
 

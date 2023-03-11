@@ -101,7 +101,7 @@ class User {
           ticketSaleCost: ticketSaleCost ?? this.ticketSaleCost,
           totalTicketSaleCost: totalTicketSaleCost ?? this.totalTicketSaleCost,
           coupon: coupon ?? this.coupon,
-          giftCard: isTrue ?? this.giftCard,
+          giftCard: isTrue ?? giftCard,
           checkedIn: checkedIn ?? this.checkedIn);
 
   static User fromJson(Map<String, dynamic> json) => User(

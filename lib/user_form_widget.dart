@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scottycon_check_in/gsheets_api.dart';
 import 'package:scottycon_check_in/user.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 
@@ -67,21 +66,21 @@ class _UserFormWidgetState extends State<UserFormWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           buildId(),
-          SizedBox(height: 16),
-          buildFirstName(),
-          SizedBox(height: 8),
-          buildLastName(),
-          SizedBox(height: 16),
           buildGiftCard(),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           buildIsStudent(),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(onPressed: scan, 
-              child: Text("Scan QR Code")),
-              SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: scan, 
+                child: const Text("Scan")
+              ),
+
+              const SizedBox(width: 16),
+
               ElevatedButton(
                   onPressed: () {
                     final form = formKey.currentState!;
@@ -92,8 +91,10 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                       widget.onSavedUser(id);
                     }
                   },
-                  child: Text("Search")),
-              SizedBox(width: 16),
+                  child: const Text("Search")),
+
+              const SizedBox(width: 16),
+
               ElevatedButton(
                   onPressed: () {
                     final form = formKey.currentState!;
@@ -103,7 +104,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                       widget.onCheckIn(true);
                     }
                   },
-                  child: Text("Check in this user"))
+                  child: const Text("Check In"))
             ],
           )
         ],
@@ -133,31 +134,30 @@ class _UserFormWidgetState extends State<UserFormWidget> {
     }
   }
 
-  Widget buildId() => TextFormField(
-        controller: controllerId,
-        decoration: const InputDecoration(
-          labelText: "Id",
-          border: OutlineInputBorder(),
+  Widget buildId() => Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: TextFormField(
+          controller: controllerId,
+          decoration: const InputDecoration(
+            labelText: "Id",
+            border: OutlineInputBorder(),
+          ),
+          validator: (value) =>
+              value != null && value.isEmpty ? 'Enter ID' : null,
         ),
-        validator: (value) =>
-            value != null && value.isEmpty ? 'Enter ID' : null,
-      );
+  );
 
-  Widget buildFirstName() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("First Name: ${controllerFirstName.text}"),
-        ),
-      );
+  Widget buildIsStudent() => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(isStudent ? "Student" : "Not Student"),
+    )
+  );
 
-  Widget buildLastName() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("Last Name: ${controllerLastName.text}"),
-        ),
-      );
-
-  Widget buildIsStudent() => Text("Is Student? : ${isStudent.toString()}");
-
-  Widget buildGiftCard() => Text("Gift Card? : ${giftCard.toString()}");
+  Widget buildGiftCard() => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(giftCard ? "Has Gift Card" : "No Gift Card"),
+    ),
+  );
 }

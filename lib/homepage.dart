@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:scottycon_check_in/main.dart';
 import 'package:scottycon_check_in/user.dart';
 import 'package:scottycon_check_in/user_form_widget.dart';
 
@@ -23,22 +21,25 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  void getUsers() async {
-    final user = await GoogleSheetsApi.getById(this.id!);
-    print(user!.toJson());
+  void getUser() async {
+    final user = await GoogleSheetsApi.getById(id!);
+
+    if (user == null) {
+      const snackBar = SnackBar(content: Text('User not found'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
 
     setState(() {
       this.user = user;
-      this.name = "${user.firstName} ${user.lastName}";
+      name = "${user.firstName} ${user.lastName}";
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<AppState>();
-
     var theme = Theme.of(context);
-    var style = theme.textTheme.displayMedium!
+    var style = theme.textTheme.headlineLarge!
         .copyWith(color: theme.colorScheme.onPrimary);
 
     return Scaffold(
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      this.name,
+                      name,
                       style: style,
                     ),
                   )),
@@ -64,13 +65,18 @@ class _HomePageState extends State<HomePage> {
                     onSavedUser: (id) async {
                       if (id != null) {
                         this.id = id;
-                        getUsers();
+                        getUser();
                       } else {
-                        print("error");
+                        Navigator.pop(context, "User not found");
                       }
                     },
                     onCheckIn: (checkin) async {
-                      GoogleSheetsApi.setCheckIn(this.user!, checkin);
+                      if (id != null) {
+                        id = id;
+                        getUser();
+                      } else {
+                      }
+                      GoogleSheetsApi.setCheckIn(user!, checkin);
                     }),
               )
             ],
