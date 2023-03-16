@@ -25,6 +25,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
   late TextEditingController controllerLastName;
   late bool isStudent;
   late bool giftCard;
+  late bool checkedIn;
   User? user;
   late int? id;
 
@@ -41,6 +42,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
     final lastName = widget.user == null ? '' : widget.user!.lastName;
     final isStudent = widget.user == null ? false : widget.user!.isStudent;
     final giftCard = widget.user == null ? false : widget.user!.giftCard;
+    final checkedIn = widget.user == null ? false : widget.user!.checkedIn;
 
     setState(() {
       controllerId = TextEditingController(text: id);
@@ -48,6 +50,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
       controllerLastName = TextEditingController(text: lastName);
       this.giftCard = giftCard;
       this.isStudent = isStudent;
+      this.checkedIn = checkedIn;
     });
   }
 
@@ -70,17 +73,13 @@ class _UserFormWidgetState extends State<UserFormWidget> {
           const SizedBox(height: 16),
           buildIsStudent(),
           const SizedBox(height: 16),
-          
+          buildCheckedIn(),
+          const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: scan, 
-                child: const Text("Scan")
-              ),
-
+              ElevatedButton(onPressed: scan, child: const Text("Scan")),
               const SizedBox(width: 16),
-
               ElevatedButton(
                   onPressed: () {
                     final form = formKey.currentState!;
@@ -92,15 +91,15 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                     }
                   },
                   child: const Text("Search")),
-
               const SizedBox(width: 16),
-
               ElevatedButton(
                   onPressed: () {
                     final form = formKey.currentState!;
+                    id = int.tryParse(controllerId.text);
                     final isValid = form.validate();
 
                     if (isValid) {
+                      widget.onSavedUser(id);
                       widget.onCheckIn(true);
                     }
                   },
@@ -135,8 +134,8 @@ class _UserFormWidgetState extends State<UserFormWidget> {
   }
 
   Widget buildId() => Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: TextFormField(
+        padding: const EdgeInsets.all(16.0),
+        child: TextFormField(
           controller: controllerId,
           decoration: const InputDecoration(
             labelText: "Id",
@@ -145,19 +144,25 @@ class _UserFormWidgetState extends State<UserFormWidget> {
           validator: (value) =>
               value != null && value.isEmpty ? 'Enter ID' : null,
         ),
-  );
+      );
 
   Widget buildIsStudent() => Card(
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(isStudent ? "Student" : "Not Student"),
-    )
-  );
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(isStudent ? "Student" : "Not Student"),
+      ));
 
   Widget buildGiftCard() => Card(
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(giftCard ? "Has Gift Card" : "No Gift Card"),
-    ),
-  );
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(giftCard ? "Has Gift Card" : "No Gift Card"),
+        ),
+      );
+
+  Widget buildCheckedIn() => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(checkedIn ? "Checked In" : "Not Checked In"),
+        ),
+      );
 }

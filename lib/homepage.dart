@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getUser() async {
-    final user = await GoogleSheetsApi.getById(id!);
+    final user = await GoogleSheetsApi.getById(this.id!);
 
     if (user == null) {
       const snackBar = SnackBar(content: Text('User not found'));
@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                 child: UserFormWidget(
                     user: user,
                     onSavedUser: (id) async {
+                      print("Tests");
                       if (id != null) {
                         this.id = id;
                         getUser();
@@ -72,11 +73,13 @@ class _HomePageState extends State<HomePage> {
                     },
                     onCheckIn: (checkin) async {
                       if (id != null) {
-                        id = id;
+                        this.id = id;
                         getUser();
-                      } else {
                       }
-                      GoogleSheetsApi.setCheckIn(user!, checkin);
+                      if (user != null) {
+                        GoogleSheetsApi.setCheckIn(user!, checkin ? "true" : "false");
+                        getUser();
+                      }
                     }),
               )
             ],

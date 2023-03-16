@@ -58,7 +58,7 @@ class GoogleSheetsApi {
     _worksheet!.values.map.appendRows(rowList);
   }
 
-  static Future setCheckIn(User user, bool checkInValue) async {
+  static Future setCheckIn(User user, String checkInValue) async {
     if (_worksheet == null) return;
 
     _worksheet!.values.insertValueByKeys(checkInValue,

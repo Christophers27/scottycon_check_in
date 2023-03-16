@@ -120,7 +120,7 @@ class User {
         totalTicketSaleCost: jsonDecode(json[UserFields.totalTicketSaleCost]),
         coupon: json[UserFields.coupon],
         giftCard: (json[UserFields.giftCard] == "Y"),
-        checkedIn: (json[UserFields.checkedIn] == "True")
+        checkedIn: (json[UserFields.checkedIn] == "true")
       );
 
   Map<String, dynamic> toJson() => {
