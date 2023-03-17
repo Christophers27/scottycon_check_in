@@ -19,7 +19,7 @@ class GoogleSheetsApi {
   ''';
 
   // Set up GSheets object
-  static const _spreadsheetId = '12DSiKFHnEPZ8vx54Q-BcX72H9LHimU1Kjh_LbDkM8bk';
+  static const _spreadsheetId = '1bscLAO-18UZNFkv89Ldvj5dH5KDptD7-R6gXhOM6g1I';
   static final _gsheets = GSheets(_credentials);
   static Worksheet? _worksheet;
 

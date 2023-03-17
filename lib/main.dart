@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 239, 87, 87))),
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 237, 0, 0))),
         home: const HomePage(),
       ),
     );

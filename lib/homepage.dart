@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   User? user;
+  int ticketNum = 0;
   String name = "Name";
   int? id;
 
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       this.user = user;
+      this.ticketNum = user.ticketNum;
       name = "${user.firstName} ${user.lastName}";
     });
   }

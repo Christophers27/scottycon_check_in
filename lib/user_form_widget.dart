@@ -12,7 +12,7 @@ class UserFormWidget extends StatefulWidget {
       {super.key,
       required this.onSavedUser,
       this.user,
-      required this.onCheckIn});
+      required this.onCheckIn,});
 
   @override
   State<UserFormWidget> createState() => _UserFormWidgetState();
@@ -21,8 +21,7 @@ class UserFormWidget extends StatefulWidget {
 class _UserFormWidgetState extends State<UserFormWidget> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController controllerId;
-  late TextEditingController controllerFirstName;
-  late TextEditingController controllerLastName;
+  late int ticketNum;
   late bool isStudent;
   late bool giftCard;
   late bool checkedIn;
@@ -38,16 +37,14 @@ class _UserFormWidgetState extends State<UserFormWidget> {
 
   void initUser() {
     final id = widget.user == null ? '' : widget.user!.id.toString();
-    final firstName = widget.user == null ? '' : widget.user!.firstName;
-    final lastName = widget.user == null ? '' : widget.user!.lastName;
+    final ticketNum = widget.user == null ? 0 : widget.user!.ticketNum;
     final isStudent = widget.user == null ? false : widget.user!.isStudent;
     final giftCard = widget.user == null ? false : widget.user!.giftCard;
     final checkedIn = widget.user == null ? false : widget.user!.checkedIn;
 
     setState(() {
       controllerId = TextEditingController(text: id);
-      controllerFirstName = TextEditingController(text: firstName);
-      controllerLastName = TextEditingController(text: lastName);
+      this.ticketNum = ticketNum;
       this.giftCard = giftCard;
       this.isStudent = isStudent;
       this.checkedIn = checkedIn;
@@ -63,18 +60,27 @@ class _UserFormWidgetState extends State<UserFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var style = theme.textTheme.headlineSmall!;
+
     return Form(
       key: formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           buildId(),
-          buildGiftCard(),
-          const SizedBox(height: 16),
-          buildIsStudent(),
-          const SizedBox(height: 16),
-          buildCheckedIn(),
-          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isStudent) buildIsStudent(),
+              if (isStudent) const SizedBox(width: 16),
+              buildCheckedIn()],
+          ),
+          const SizedBox(height: 8),
+          buildTicketNum(style),
+          const SizedBox(height: 8),
+          buildCouponNum(style),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -86,8 +92,11 @@ class _UserFormWidgetState extends State<UserFormWidget> {
                     id = int.tryParse(controllerId.text);
                     final isValid = form.validate();
 
-                    if (isValid) {
+                    if (isValid && id != null) {
                       widget.onSavedUser(id);
+                    } else {
+                      const snackBar = SnackBar(content: Text('User not found'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                   child: const Text("Search")),
@@ -149,20 +158,31 @@ class _UserFormWidgetState extends State<UserFormWidget> {
   Widget buildIsStudent() => Card(
           child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(isStudent ? "Student" : "Not Student"),
+        child: Text(isStudent ? "CHECK STUDENT ID" : "NOT STUDENT"),
       ));
-
-  Widget buildGiftCard() => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(giftCard ? "Has Gift Card" : "No Gift Card"),
-        ),
-      );
 
   Widget buildCheckedIn() => Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(checkedIn ? "Checked In" : "Not Checked In"),
+          child: Text(checkedIn ? "Checked-In? : Yes" : "Checked-In? : No"),
+        ),
+      );
+
+  Widget buildTicketNum(TextStyle style) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Tickets: ${ticketNum.toString()}",
+            style: style,),
+        ),
+      );
+  
+  Widget buildCouponNum(TextStyle style) => Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Gift Cards: ${ticketNum.toString()}",
+            style: style,),
         ),
       );
 }
