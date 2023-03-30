@@ -2,10 +2,14 @@
 
 An app that automizes the check-in process for the convention by scanning a QR code, converting it to an id, and checking in the person with the data in a Google Spreadsheet.
 
-## Currently WIP
+## Version 1.0.0
 Implemented:
 - Google SpreadSheet Access
-- Search Function (Preliminary)
+- User Search Function
+- QR code scanning functionality
 
 To Do:
-- QR Code scanning functionality
+- Make a version of the app for attendees instead of just staff
+- - Map
+- - Events
+- - Other?
