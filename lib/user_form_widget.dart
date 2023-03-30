@@ -181,7 +181,7 @@ class _UserFormWidgetState extends State<UserFormWidget> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Gift Cards: ${ticketNum.toString()}",
+            "Gift Cards: ${giftCard ? ticketNum.toString() : "0"}",
             style: style,),
         ),
       );
